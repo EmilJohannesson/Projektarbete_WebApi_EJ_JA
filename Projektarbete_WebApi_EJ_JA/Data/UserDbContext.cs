@@ -15,4 +15,5 @@ namespace Projektarbete_WebApi_EJ_JA.Data
         public UserDbContext(DbContextOptions<UserDbContext> options) : base(options) { }
 
         public DbSet<GeoMessage> GeoMessages { get; set; }
+    }
 }
