@@ -13,6 +13,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
+using Projektarbete_WebApi_EJ_JA.Models;
 
 namespace Projektarbete_WebApi_EJ_JA
 {
@@ -28,7 +31,7 @@ namespace Projektarbete_WebApi_EJ_JA
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<GeoMessageDBContext>(options => 
+            services.AddDbContext<UserDbContext>(options => 
             options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=GeoMessages"));
 
             services.AddControllers();
@@ -36,7 +39,39 @@ namespace Projektarbete_WebApi_EJ_JA
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Projektarbete_WebApi_EJ_JA", Version = "v1" });
+                c.EnableAnnotations();
+                c.AddSecurityDefinition("basic", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "basic",
+                    In = ParameterLocation.Header,
+                    Description = "Basic Authorization header using the Bearer scheme."
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "basic"
+                            }
+                        },
+                        new string[] {}
+                    }
+                });
             });
+
+            services.AddDbContext<UserDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentityCore<User>()
+                .AddEntityFrameworkStores<UserDbContext>();
+
+           // services.AddAuthentication("BasicAuthentication")
+           //     .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
