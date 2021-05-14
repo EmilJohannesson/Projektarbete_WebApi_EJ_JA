@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Projektarbete_WebApi_EJ_JA.Data;
 using Projektarbete_WebApi_EJ_JA.Models;
+using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,10 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
         {
             _context = context;
         }
-
+        /// <summary>
+        /// Ger en lista med alla GeoMessages som skapats
+        /// </summary>
+        /// <returns>Lista med GeoMessages</returns>
         [HttpGet]
         [Route("GetGeoMessages")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -30,6 +34,10 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
         }
 
         [HttpPost]
+        [SwaggerOperation(
+            Summary = "Skapa ett GeoMessage",
+            Description = "Skapa ett GeoMessage med Longitud och Latitud, med tillhörande textmedelande"
+            )]
         [Route("CreateNewGeoMessage")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -52,6 +60,10 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
         }
 
         [HttpGet]
+        [SwaggerOperation(
+            Summary = "Hämta GeoMessage {Id}",
+            Description = "Hämta ett GeoMessage med en specifik {Id}"
+            )]
         [Route("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

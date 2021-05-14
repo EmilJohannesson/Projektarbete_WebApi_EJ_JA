@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Projektarbete_WebApi_EJ_JA.Models;
+using System.IO;
 
 namespace Projektarbete_WebApi_EJ_JA
 {
@@ -39,7 +40,11 @@ namespace Projektarbete_WebApi_EJ_JA
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Projektarbete_WebApi_EJ_JA", Version = "v1" });
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, "Documentation.xml");
+                c.IncludeXmlComments(xmlPath);
+
                 c.EnableAnnotations();
+
                 c.AddSecurityDefinition("basic", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
@@ -48,6 +53,7 @@ namespace Projektarbete_WebApi_EJ_JA
                     In = ParameterLocation.Header,
                     Description = "Basic Authorization header using the Bearer scheme."
                 });
+
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
