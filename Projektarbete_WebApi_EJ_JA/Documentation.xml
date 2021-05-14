@@ -4,6 +4,11 @@
         <name>Projektarbete_WebApi_EJ_JA</name>
     </assembly>
     <members>
+        <member name="T:Projektarbete_WebApi_EJ_JA.Controllers.GeoController">
+            <summary>
+            Denna Controllern har metoder som låter oss hämta och skapa GeoMessages.
+            </summary>
+        </member>
         <member name="M:Projektarbete_WebApi_EJ_JA.Controllers.GeoController.GetAllGeoMessages">
             <summary>
             Ger en lista med alla GeoMessages som skapats
