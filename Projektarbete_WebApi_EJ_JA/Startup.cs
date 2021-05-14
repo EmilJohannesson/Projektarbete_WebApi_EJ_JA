@@ -18,6 +18,8 @@ using Microsoft.AspNetCore.Identity;
 using Projektarbete_WebApi_EJ_JA.Models;
 using System.IO;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.Extensions.Options;
 
 namespace Projektarbete_WebApi_EJ_JA
 {
@@ -40,15 +42,25 @@ namespace Projektarbete_WebApi_EJ_JA
 
             services.AddApiVersioning(config =>
             {
-                config.DefaultApiVersion = new ApiVersion(1, 0);
+                config.DefaultApiVersion = new ApiVersion(2, 0);
                 config.AssumeDefaultVersionWhenUnspecified = true;
                 config.ReportApiVersions = true;
-                config.ApiVersionReader = new HeaderApiVersionReader("api-version");
+
             });
+
+            services.AddVersionedApiExplorer(o =>
+            {
+                o.GroupNameFormat = "'v'VVV";
+            });
+
+            
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Projektarbete_WebApi_EJ_JA", Version = "v1" });
+                c.SwaggerDoc("v1.0", new OpenApiInfo { Title = "Projektarbete_WebApi_EJ_JA", Version = "v1.0" });
+                c.SwaggerDoc("v2.0", new OpenApiInfo { Title = "Projektarbete_WebApi_EJ_JA", Version = "v2.0" });
+
+
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, "Documentation.xml");
                 c.IncludeXmlComments(xmlPath);
 
@@ -62,6 +74,7 @@ namespace Projektarbete_WebApi_EJ_JA
                     In = ParameterLocation.Header,
                     Description = "Basic Authorization header using the Bearer scheme."
                 });
+
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
@@ -91,15 +104,23 @@ namespace Projektarbete_WebApi_EJ_JA
             
         }
 
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Projektarbete_WebApi_EJ_JA v1"));
-            }
+
+            };
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint($"/swagger/v1.0/swagger.json", "Projektarbete_WebApi_EJ_JA v1.0");
+                c.SwaggerEndpoint($"/swagger/v2.0/swagger.json", "Projektarbete_WebApi_EJ_JA v2.0");
+            });
+
 
             app.UseHttpsRedirection();
 
