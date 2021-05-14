@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Projektarbete_WebApi_EJ_JA.Models;
 using System.IO;
+using Microsoft.AspNetCore.Mvc.Versioning;
 
 namespace Projektarbete_WebApi_EJ_JA
 {
@@ -37,6 +38,15 @@ namespace Projektarbete_WebApi_EJ_JA
 
             services.AddControllers();
 
+
+            services.AddApiVersioning(config =>
+            {
+                config.DefaultApiVersion = new ApiVersion(1, 0);
+                config.AssumeDefaultVersionWhenUnspecified = true;
+                config.ReportApiVersions = true;
+                config.ApiVersionReader = new HeaderApiVersionReader("api-version");
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Projektarbete_WebApi_EJ_JA", Version = "v1" });
@@ -53,6 +63,8 @@ namespace Projektarbete_WebApi_EJ_JA
                     In = ParameterLocation.Header,
                     Description = "Basic Authorization header using the Bearer scheme."
                 });
+
+
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {

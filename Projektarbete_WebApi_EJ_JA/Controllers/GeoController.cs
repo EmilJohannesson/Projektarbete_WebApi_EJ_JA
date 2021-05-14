@@ -13,7 +13,9 @@ using System.Threading.Tasks;
 namespace Projektarbete_WebApi_EJ_JA.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     public class GeoController : ControllerBase
     {
         private readonly UserDbContext _context;
@@ -23,10 +25,11 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
         }
         /// <summary>
         /// Ger en lista med alla GeoMessages som skapats
-        /// </summary>
+        /// </summary>  
         /// <returns>Lista med GeoMessages</returns>
         [HttpGet]
         [Route("GetGeoMessages")]
+        [MapToApiVersion("1.0")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<GeoMessage>>> GetAllGeoMessages()
         {
@@ -39,6 +42,7 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
             Description = "Skapa ett GeoMessage med Longitud och Latitud, med tillhörande textmedelande"
             )]
         [Route("CreateNewGeoMessage")]
+        [MapToApiVersion("1.0")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<GeoMessage>> CreateNewPostAsync(GeoMessage request)
@@ -65,6 +69,7 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
             Description = "Hämta ett GeoMessage med en specifik {Id}"
             )]
         [Route("{id}")]
+        [MapToApiVersion("1.0")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<GeoMessage>> GetMessage(int id)
