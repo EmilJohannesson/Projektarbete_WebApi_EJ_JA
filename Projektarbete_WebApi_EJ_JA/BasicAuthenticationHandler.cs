@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Projektarbete_WebApi_EJ_JA
 {
-    public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
-    {
-        private readonly UserManager<IdentityUser> _userManager;
-    }
+   // public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
+   // {
+   //     private readonly UserManager<IdentityUser> _userManager;
+   // }
 }
 
