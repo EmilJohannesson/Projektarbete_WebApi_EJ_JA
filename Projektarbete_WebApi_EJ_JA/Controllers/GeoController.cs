@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace Projektarbete_WebApi_EJ_JA.Controllers
 {
+    /// <summary>
+    /// Denna Controllern har metoder som låter oss hämta och skapa GeoMessages.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class GeoController : ControllerBase
