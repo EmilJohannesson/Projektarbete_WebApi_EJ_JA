@@ -5,11 +5,25 @@ using System.Threading.Tasks;
 
 namespace Projektarbete_WebApi_EJ_JA.Models
 {
-    public class GeoMessage
+    namespace V1
     {
-        public int Id { get; set; }
-        public string Message { get; set; }
-        public double Longitude { get; set; }
-        public double Latitude { get; set; }
+        public class GeoMessage
+        {
+            public int Id { get; set; }
+            public string Message { get; set; }
+            public double Longitude { get; set; }
+            public double Latitude { get; set; }
+        }
+
+    } 
+    namespace V2
+    {
+        public class GeoMessage
+        {
+            public int Id { get; set; }
+            public string Message { get; set; }
+            public double Longitude { get; set; }
+            public double Latitude { get; set; }
+        }
     }
 }

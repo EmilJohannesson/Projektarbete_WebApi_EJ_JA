@@ -2,9 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Projektarbete_WebApi_EJ_JA.Data;
-using Projektarbete_WebApi_EJ_JA.Models;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
@@ -13,81 +11,150 @@ using System.Threading.Tasks;
 
 namespace Projektarbete_WebApi_EJ_JA.Controllers
 {
-    /// <summary>
-    /// Denna Controllern har metoder som låter oss hämta och skapa GeoMessages.
-    /// </summary>
-    [Authorize]
-    [ApiController]
-    [Route("api/v{version:apiVersion}/[controller]")]
-    [ApiVersion("1.0")]
-    [ApiVersion("2.0")]
-    public class GeoController : ControllerBase
+    namespace V1
     {
-        private readonly UserDbContext _context;
-        public GeoController(UserDbContext context)
-        {
-            _context = context;
-        }
         /// <summary>
-        /// Ger en lista med alla GeoMessages som skapats
-        /// </summary>  
-        /// <returns>Lista med GeoMessages</returns>
-        [AllowAnonymous]
-        [HttpGet]
-        [Route("GetGeoMessages")]
-        [MapToApiVersion("1.0")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<GeoMessage>>> GetAllGeoMessages()
+        /// Denna Controllern har metoder som låter oss hämta och skapa GeoMessages.
+        /// </summary>
+        [ApiController]
+        [ApiVersion("1.0")]
+        [Route("api/v{version:apiVersion}/[controller]")]
+        [Authorize]
+        public class GeoController : ControllerBase
         {
-            return await _context.GeoMessages.ToListAsync();
-        }
-
-        //[Authorize]
-        [HttpPost]
-        [SwaggerOperation(
-            Summary = "Skapa ett GeoMessage",
-            Description = "Skapa ett GeoMessage med Longitud och Latitud, med tillhörande textmedelande"
-            )]
-        [Route("CreateNewGeoMessage")]
-        [MapToApiVersion("1.0")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<GeoMessage>> CreateNewPostAsync(GeoMessage request)
-        {
-            if (string.IsNullOrWhiteSpace(request.Message))
+            private readonly UserDbContext _context;
+            public GeoController(UserDbContext context)
             {
-                return BadRequest();
+                _context = context;
             }
-            var geoMessagePost = new GeoMessage
+            /// <summary>
+            /// Ger en lista med alla GeoMessages som skapats
+            /// </summary>  
+            /// <returns>Lista med GeoMessages</returns>
+            [AllowAnonymous]
+            [HttpGet("[action]")]
+            [ProducesResponseType(StatusCodes.Status200OK)]
+            public async Task<ActionResult<IEnumerable<Models.V1.GeoMessage>>> GetAllGeoMessages()
             {
-                Message = request.Message,
-                Longitude = request.Longitude,
-                Latitude = request.Latitude
-            };
-
-            await _context.AddAsync(geoMessagePost);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetMessage), new { id = geoMessagePost.Id }, geoMessagePost);
-        }
-
-        [AllowAnonymous]
-        [HttpGet]
-        [SwaggerOperation(
-            Summary = "Hämta GeoMessage {Id}",
-            Description = "Hämta ett GeoMessage med en specifik {Id}"
-            )]
-        [Route("{id}")]
-        [MapToApiVersion("1.0")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<GeoMessage>> GetMessage(int id)
-        {
-            GeoMessage geoMessage = await _context.GeoMessages.FindAsync(id);
-            if (geoMessage == null)
-            {
-                return NotFound();
+                return await _context.GeoMessages.ToListAsync();
             }
-            return geoMessage;
+
+            [HttpPost("[action]")]
+            [SwaggerOperation(
+                Summary = "Skapa ett GeoMessage",
+                Description = "Skapa ett GeoMessage med Longitud och Latitud, med tillhörande textmedelande"
+                )]
+            [ProducesResponseType(StatusCodes.Status201Created)]
+            [ProducesResponseType(StatusCodes.Status400BadRequest)]
+            public async Task<ActionResult<Models.V1.GeoMessage>> CreateNewPostAsync(Models.V1.GeoMessage request)
+            {
+                if (string.IsNullOrWhiteSpace(request.Message))
+                {
+                    return BadRequest();
+                }
+                var geoMessagePost = new Models.V1.GeoMessage
+                {
+                    Message = request.Message,
+                    Longitude = request.Longitude,
+                    Latitude = request.Latitude
+                };
+
+                await _context.AddAsync(geoMessagePost);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction(nameof(GetMessage), new { id = geoMessagePost.Id }, geoMessagePost);
+            }
+
+            [AllowAnonymous]
+            [HttpGet("[action]")]
+            [SwaggerOperation(
+                Summary = "Hämta GeoMessage {Id}",
+                Description = "Hämta ett GeoMessage med en specifik {Id}"
+                )]
+            [ProducesResponseType(StatusCodes.Status200OK)]
+            [ProducesResponseType(StatusCodes.Status404NotFound)]
+            public async Task<ActionResult<Models.V1.GeoMessage>> GetMessage(int id)
+            {
+                Models.V1.GeoMessage geoMessage = await _context.GeoMessages.FindAsync(id);
+                if (geoMessage == null)
+                {
+                    return NotFound();
+                }
+                return geoMessage;
+            }
         }
     }
+    namespace V2
+    {
+        /// <summary>
+        /// Denna Controllern har metoder som låter oss hämta och skapa GeoMessages.
+        /// </summary>
+        [Authorize]
+        [ApiController]
+        [ApiVersion("2.0")]
+        [Route("api/v{version:apiVersion}/[controller]")]
+        public class GeoController : ControllerBase
+        {
+            private readonly UserDbContext _context;
+            public GeoController(UserDbContext context)
+            {
+                _context = context;
+            }
+            /// <summary>
+            /// Ger en lista med alla GeoMessages som skapats
+            /// </summary>  
+            /// <returns>Lista med GeoMessages</returns>
+            [AllowAnonymous]
+            [HttpGet("[action]")]
+            [ProducesResponseType(StatusCodes.Status200OK)]
+            public async Task<ActionResult<IEnumerable<Models.V2.GeoMessage>>> GetAllGeoMessages()
+            {
+                return await _context.GeoMessagesV2.ToListAsync();
+            }
+
+            [HttpPost("[action]")]
+            [SwaggerOperation(
+                Summary = "Skapa ett GeoMessage",
+                Description = "Skapa ett GeoMessage med Longitud och Latitud, med tillhörande textmedelande"
+                )]
+            [ProducesResponseType(StatusCodes.Status201Created)]
+            [ProducesResponseType(StatusCodes.Status400BadRequest)]
+            public async Task<ActionResult<Models.V2.GeoMessage>> CreateNewPostAsync(Models.V2.GeoMessage request)
+            {
+                if (string.IsNullOrWhiteSpace(request.Message))
+                {
+                    return BadRequest();
+                }
+                var geoMessagePost = new Models.V2.GeoMessage
+                {
+                    Message = request.Message,
+                    Longitude = request.Longitude,
+                    Latitude = request.Latitude
+                };
+
+                await _context.AddAsync(geoMessagePost);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction(nameof(GetMessage), new { id = geoMessagePost.Id }, geoMessagePost);
+            }
+
+            [AllowAnonymous]
+            [HttpGet("[action]")]
+            [SwaggerOperation(
+                Summary = "Hämta GeoMessage {Id}",
+                Description = "Hämta ett GeoMessage med en specifik {Id}"
+                )]
+            [ProducesResponseType(StatusCodes.Status200OK)]
+            [ProducesResponseType(StatusCodes.Status404NotFound)]
+            public async Task<ActionResult<Models.V2.GeoMessage>> GetMessage(int id)
+            {
+                Models.V2.GeoMessage geoMessage = await _context.GeoMessagesV2.FindAsync(id);
+                if (geoMessage == null)
+                {
+                    return NotFound();
+                }
+                return geoMessage;
+            }
+        }
+
+    }
 }
+

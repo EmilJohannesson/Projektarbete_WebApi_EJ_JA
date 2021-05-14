@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Projektarbete_WebApi_EJ_JA.Data;
 using System;
@@ -18,6 +17,7 @@ using Microsoft.AspNetCore.Identity;
 using Projektarbete_WebApi_EJ_JA.Models;
 using System.IO;
 using Microsoft.AspNetCore.Mvc.Versioning;
+
 
 namespace Projektarbete_WebApi_EJ_JA
 {
@@ -43,13 +43,22 @@ namespace Projektarbete_WebApi_EJ_JA
                 config.DefaultApiVersion = new ApiVersion(1, 0);
                 config.AssumeDefaultVersionWhenUnspecified = true;
                 config.ReportApiVersions = true;
-                config.ApiVersionReader = new HeaderApiVersionReader("api-version");
+                config.ApiVersionReader = new QueryStringApiVersionReader("v");
+            });
+
+            services.AddVersionedApiExplorer(o =>
+            {
+                //Ett whitespace framför 'v' gav ~2h felsökning :,(
+                o.GroupNameFormat = "'v'VVV";
+                o.SubstituteApiVersionInUrl = true;
             });
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Projektarbete_WebApi_EJ_JA", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "GeoV1", Version = "v1.0" });
+                c.SwaggerDoc("v2", new OpenApiInfo { Title = "GeoV2", Version = "v2.0" });
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, "Documentation.xml");
+
                 c.IncludeXmlComments(xmlPath);
 
                 c.EnableAnnotations();
@@ -98,7 +107,11 @@ namespace Projektarbete_WebApi_EJ_JA
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Projektarbete_WebApi_EJ_JA v1"));
+                app.UseSwaggerUI(c => 
+                {
+                    c.SwaggerEndpoint($"/swagger/v1/swagger.json", $"v1.0");
+                    c.SwaggerEndpoint($"/swagger/v2/swagger.json", $"v2.0");
+                });
             }
 
             app.UseHttpsRedirection();

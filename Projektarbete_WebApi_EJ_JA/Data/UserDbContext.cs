@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Projektarbete_WebApi_EJ_JA.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Projektarbete_WebApi_EJ_JA.Data
 {
@@ -14,7 +13,8 @@ namespace Projektarbete_WebApi_EJ_JA.Data
     {
         public UserDbContext(DbContextOptions<UserDbContext> options) : base(options) { }
 
-        public DbSet<GeoMessage> GeoMessages { get; set; }
+        public DbSet<Models.V1.GeoMessage> GeoMessages { get; set; }
+        public DbSet<Models.V2.GeoMessage> GeoMessagesV2 { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
