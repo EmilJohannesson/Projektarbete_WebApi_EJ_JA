@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -15,6 +16,7 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
     /// <summary>
     /// Denna Controllern har metoder som låter oss hämta och skapa GeoMessages.
     /// </summary>
+    [Authorize]
     [ApiController]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiVersion("1.0")]
@@ -30,6 +32,7 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
         /// Ger en lista med alla GeoMessages som skapats
         /// </summary>  
         /// <returns>Lista med GeoMessages</returns>
+        [AllowAnonymous]
         [HttpGet]
         [Route("GetGeoMessages")]
         [MapToApiVersion("1.0")]
@@ -39,6 +42,7 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
             return await _context.GeoMessages.ToListAsync();
         }
 
+        //[Authorize]
         [HttpPost]
         [SwaggerOperation(
             Summary = "Skapa ett GeoMessage",
@@ -66,6 +70,7 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
             return CreatedAtAction(nameof(GetMessage), new { id = geoMessagePost.Id }, geoMessagePost);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [SwaggerOperation(
             Summary = "Hämta GeoMessage {Id}",
@@ -84,8 +89,5 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
             }
             return geoMessage;
         }
-
-
-
     }
 }

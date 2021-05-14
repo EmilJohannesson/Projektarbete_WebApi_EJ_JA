@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Projektarbete_WebApi_EJ_JA.Migrations
 {
-    public partial class userDB : Migration
+    public partial class FinalMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -168,6 +168,11 @@ namespace Projektarbete_WebApi_EJ_JA.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "16c9587f-71b3-4312-9cb7-457bde8bc52d", 0, "2b62309b-d179-43f2-a9ac-e918fc954445", null, false, "Emil", "Johannesson", false, null, null, "EMIL", "AQAAAAEAACcQAAAAEI4g14aVvl8rYdgTQwEG+EJVHcv9FeZXfRFLtLNPP3XV44O2M6y3AEYlFf6gxewL9w==", null, false, "22806377-2f00-4804-b828-aab8ce097267", false, "Emil" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

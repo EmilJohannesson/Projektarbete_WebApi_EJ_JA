@@ -38,7 +38,6 @@ namespace Projektarbete_WebApi_EJ_JA
 
             services.AddControllers();
 
-
             services.AddApiVersioning(config =>
             {
                 config.DefaultApiVersion = new ApiVersion(1, 0);
@@ -64,8 +63,6 @@ namespace Projektarbete_WebApi_EJ_JA
                     Description = "Basic Authorization header using the Bearer scheme."
                 });
 
-
-
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
@@ -90,6 +87,8 @@ namespace Projektarbete_WebApi_EJ_JA
 
             services.AddAuthentication("BasicAuthentication")
                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -106,6 +105,7 @@ namespace Projektarbete_WebApi_EJ_JA
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

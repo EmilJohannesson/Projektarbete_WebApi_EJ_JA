@@ -240,6 +240,24 @@ namespace Projektarbete_WebApi_EJ_JA.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "16c9587f-71b3-4312-9cb7-457bde8bc52d",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "2b62309b-d179-43f2-a9ac-e918fc954445",
+                            EmailConfirmed = false,
+                            FirstName = "Emil",
+                            LastName = "Johannesson",
+                            LockoutEnabled = false,
+                            NormalizedUserName = "EMIL",
+                            PasswordHash = "AQAAAAEAACcQAAAAEI4g14aVvl8rYdgTQwEG+EJVHcv9FeZXfRFLtLNPP3XV44O2M6y3AEYlFf6gxewL9w==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "22806377-2f00-4804-b828-aab8ce097267",
+                            TwoFactorEnabled = false,
+                            UserName = "Emil"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

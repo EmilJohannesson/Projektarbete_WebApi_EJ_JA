@@ -18,7 +18,24 @@ namespace Projektarbete_WebApi_EJ_JA.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
 
+            var hasher = new PasswordHasher<User>();
+
+            User user = new User()
+            {
+                FirstName = "Emil",
+                LastName = "Johannesson",
+                UserName = "Emil",
+                NormalizedUserName ="EMIL",
+                PasswordHash = hasher.HashPassword(null, "Test")
+            };
+            /*
+            PasswordHasher<User> passwordHasher = new PasswordHasher<User>();
+            passwordHasher.HashPassword(user, "Test");
+            */
+            builder.Entity<User>().HasData(user);
         }
+        
     }
 }
