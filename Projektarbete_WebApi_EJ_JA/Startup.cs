@@ -20,7 +20,10 @@ using System.IO;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.Extensions.Options;
-
+using Swashbuckle.Swagger;
+using IDocumentFilter = Swashbuckle.Swagger.IDocumentFilter;
+using IOperationFilter = Swashbuckle.Swagger.IOperationFilter;
+using Projektarbete_WebApi_EJ_JA.options;
 
 namespace Projektarbete_WebApi_EJ_JA
 {
@@ -30,6 +33,55 @@ namespace Projektarbete_WebApi_EJ_JA
         {
             Configuration = configuration;
         }
+
+
+        private static void configureSwaggerGen(SwaggerGenOptions options)
+        {
+            addSwaggerDocs(options);
+
+            options.OperationFilter<RemoveVersionFromParameter>();
+            options.DocumentFilter<ReplaceVersionWithExactValueInPath>();
+
+            options.DocInclusionPredicate((version, desc) =>
+            {
+                if (!desc.TryGetMethodInfo(out var methodInfo))
+                    return false;
+
+                var versions = methodInfo
+                   .DeclaringType?
+               .GetCustomAttributes(true)
+               .OfType<ApiVersionAttribute>()
+               .SelectMany(attr => attr.Versions);
+
+                var maps = methodInfo
+                   .GetCustomAttributes(true)
+               .OfType<MapToApiVersionAttribute>()
+               .SelectMany(attr => attr.Versions)
+               .ToList();
+
+                return versions?.Any(v => $"v{v}" == version) == true
+                         && (!maps.Any() || maps.Any(v => $"v{v}" == version));
+            });
+        }
+
+
+        private static void addSwaggerDocs(SwaggerGenOptions options)
+        {
+            options.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Version = "v1",
+                Title = "Projektarbete_WebApi_EJ_JA",
+                Description = "Projektarbete_WebApi_EJ_JA",
+            });
+
+            options.SwaggerDoc("v2", new OpenApiInfo
+            {
+                Version = "v2",
+                Title = "Projektarbete_WebApi_EJ_JA",
+                Description = "Projektarbete_WebApi_EJ_JA",
+            });
+        }
+
 
         public IConfiguration Configuration { get; }
 
@@ -41,26 +93,19 @@ namespace Projektarbete_WebApi_EJ_JA
 
             services.AddControllers();
 
-            services.AddApiVersioning(config =>
+            services.AddApiVersioning(o =>
             {
-                config.DefaultApiVersion = new ApiVersion(2, 0);
-                config.AssumeDefaultVersionWhenUnspecified = true;
-                config.ReportApiVersions = true;
-                config.ApiVersionReader = new QueryStringApiVersionReader("api-version");
-
+                o.AssumeDefaultVersionWhenUnspecified = true;
+                o.DefaultApiVersion = new ApiVersion(1, 0);
             });
 
-            services.AddVersionedApiExplorer(o =>
-            {
-                o.GroupNameFormat = "'v'VVV";
-            });
+
+            services.AddSwaggerGen(configureSwaggerGen);
 
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1.0", new OpenApiInfo { Title = "Projektarbete_WebApi_EJ_JA", Version = "v1.0" });
-                c.SwaggerDoc("v2.0", new OpenApiInfo { Title = "Projektarbete_WebApi_EJ_JA", Version = "v2.0" });
-
+     
 
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, "Documentation.xml");
                 c.IncludeXmlComments(xmlPath);
@@ -75,6 +120,8 @@ namespace Projektarbete_WebApi_EJ_JA
                     In = ParameterLocation.Header,
                     Description = "Basic Authorization header using the Bearer scheme."
                 });
+
+
 
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -115,19 +162,16 @@ namespace Projektarbete_WebApi_EJ_JA
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint($"/swagger/v1.0/swagger.json", "Projektarbete_WebApi_EJ_JA v1.0");
-                    c.SwaggerEndpoint($"/swagger/v2.0/swagger.json", "Projektarbete_WebApi_EJ_JA v2.0");
+                    c.SwaggerEndpoint($"/swagger/v1/swagger.json", "Projektarbete_WebApi_EJ_JA v1");
+                    c.SwaggerEndpoint($"/swagger/v2/swagger.json", "Projektarbete_WebApi_EJ_JA v2");
+                    c.DisplayOperationId();
+                    c.DisplayRequestDuration();
                 });
             };
 
-           
-      
-
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -136,5 +180,7 @@ namespace Projektarbete_WebApi_EJ_JA
                 endpoints.MapControllers();
             });
         }
+
+
     }
 }

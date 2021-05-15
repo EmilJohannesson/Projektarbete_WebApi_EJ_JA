@@ -14,6 +14,7 @@
             Ger en lista med alla GeoMessages som skapats
             </summary>  
             <returns>Lista med GeoMessages</returns>
+            
         </member>
     </members>
 </doc>
