@@ -71,14 +71,14 @@ namespace Projektarbete_WebApi_EJ_JA
             {
                 Version = "v1",
                 Title = "Projektarbete_WebApi_EJ_JA",
-                Description = "Projektarbete_WebApi_EJ_JA",
+                Description = "Projektarbete_WebApi_EJ_JA V2",
             });
 
             options.SwaggerDoc("v2", new OpenApiInfo
             {
                 Version = "v2",
                 Title = "Projektarbete_WebApi_EJ_JA",
-                Description = "Projektarbete_WebApi_EJ_JA",
+                Description = "Projektarbete_WebApi_EJ_JA V2",
             });
         }
 
@@ -106,7 +106,6 @@ namespace Projektarbete_WebApi_EJ_JA
             services.AddSwaggerGen(c =>
             {
      
-
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, "Documentation.xml");
                 c.IncludeXmlComments(xmlPath);
 

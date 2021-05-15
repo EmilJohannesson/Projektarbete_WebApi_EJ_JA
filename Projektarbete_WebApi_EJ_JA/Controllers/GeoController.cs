@@ -126,7 +126,10 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
             {
                 Message = request.Message,
                 Longitude = request.Longitude,
-                Latitude = request.Latitude
+                Latitude = request.Latitude,
+                Title = request.Title,
+                Body = request.Body,
+                Author = request.Author
             };
 
             await _context.AddAsync(geoMessagePost);
