@@ -40,9 +40,17 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
         [HttpGet("GetAllGeoMessages")]
         [MapToApiVersion("1")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<GeoMessage>>> GetAllGeoMessages()
+        public async Task<ActionResult<IEnumerable<Object>>> GetAllGeoMessages()
         {
-            return await _context.GeoMessages.ToListAsync();
+
+
+            return await _context.GeoMessages.Select(p => new 
+            {
+                Message = p.Message,
+                Latitude = p.Latitude,
+                Longitude = p.Longitude
+            }).ToListAsync();
+
         }
 
 
