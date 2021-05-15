@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.Extensions.Options;
 
+
 namespace Projektarbete_WebApi_EJ_JA
 {
     public class Startup
@@ -45,6 +46,7 @@ namespace Projektarbete_WebApi_EJ_JA
                 config.DefaultApiVersion = new ApiVersion(2, 0);
                 config.AssumeDefaultVersionWhenUnspecified = true;
                 config.ReportApiVersions = true;
+                config.ApiVersionReader = new QueryStringApiVersionReader("api-version");
 
             });
 
@@ -53,7 +55,6 @@ namespace Projektarbete_WebApi_EJ_JA
                 o.GroupNameFormat = "'v'VVV";
             });
 
-            
 
             services.AddSwaggerGen(c =>
             {
@@ -111,15 +112,16 @@ namespace Projektarbete_WebApi_EJ_JA
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint($"/swagger/v1.0/swagger.json", "Projektarbete_WebApi_EJ_JA v1.0");
+                    c.SwaggerEndpoint($"/swagger/v2.0/swagger.json", "Projektarbete_WebApi_EJ_JA v2.0");
+                });
             };
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint($"/swagger/v1.0/swagger.json", "Projektarbete_WebApi_EJ_JA v1.0");
-                c.SwaggerEndpoint($"/swagger/v2.0/swagger.json", "Projektarbete_WebApi_EJ_JA v2.0");
-            });
+           
+      
 
 
             app.UseHttpsRedirection();
