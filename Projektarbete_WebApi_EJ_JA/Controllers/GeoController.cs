@@ -137,9 +137,9 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
         [AllowAnonymous]
         [HttpGet]
         [SwaggerOperation(
-    Summary = "Hämta GeoMessage {Id}",
-    Description = "Hämta ett GeoMessage med en specifik {Id}"
-    )]
+         Summary = "Hämta GeoMessage {Id}",
+         Description = "Hämta ett GeoMessage med en specifik {Id}"
+         )]
         [Route("{id}")]
         [MapToApiVersion("2")]
         [ProducesResponseType(StatusCodes.Status200OK)]
