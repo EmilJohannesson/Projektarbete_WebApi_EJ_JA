@@ -16,7 +16,7 @@
             <returns>Lista med GeoMessages</returns>
             
         </member>
-        <member name="M:Projektarbete_WebApi_EJ_JA.Controllers.GeoController.GetAllGeoMessagesV2(System.Int32,System.Int32,System.Int32,System.Int32)">
+        <member name="M:Projektarbete_WebApi_EJ_JA.Controllers.GeoController.GetAllGeoMessagesV2(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})">
             <summary>
             Ger en lista med alla GeoMessages som skapats
             </summary>  

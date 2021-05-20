@@ -114,21 +114,35 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
         [HttpGet("GetAllGeoMessages")]
         [MapToApiVersion("2")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<Object>>> GetAllGeoMessagesV2(int minLon, int minLat, int maxLon, int maxLat)
+        public async Task<ActionResult<IEnumerable<Object>>> GetAllGeoMessagesV2(int? minLon, int? minLat, int? maxLon, int? maxLat)
         {
-            return await _context.GeoMessages.Where(p => p.Latitude >= minLat && p.Latitude <= maxLat && p.Longitude >= minLon && p.Longitude <= maxLon).ToListAsync();
+            var TheMessage = await _context.GeoMessages.Where(p => p.Latitude >= minLat && p.Latitude <= maxLat && p.Longitude >= minLon && p.Longitude <= maxLon).ToListAsync();
 
-           /* return await _context.GeoMessages.Select(p => new
+            int?[] myValues = new int?[] { minLon, minLat, maxLon, maxLat };
+
+            foreach (var value in myValues)
             {
-                Message =   p.Message,
-                Title   =   p.Title,
-                Author   =  p.Author,
-                Latitude =  p.Latitude,
-                Longitude = p.Longitude
+                if (value == null)
+                {
+                    return await _context.GeoMessages.ToListAsync();
+                }
+                   
                 
+            }
 
-            }).ToListAsync();
-           */
+            return TheMessage;
+
+            /* return await _context.GeoMessages.Select(p => new
+             {
+                 Message =   p.Message,
+                 Title   =   p.Title,
+                 Author   =  p.Author,
+                 Latitude =  p.Latitude,
+                 Longitude = p.Longitude
+
+
+             }).ToListAsync();
+            */
         } 
 
         //[Authorize]
