@@ -114,7 +114,7 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
         [HttpGet("GetAllGeoMessages")]
         [SwaggerOperation(
             Summary = "Get GeoMessage",
-            Description = ""
+            Description = "(minLon,minLat, maxLon, maxLat)används för att hämta alla kommentarerinom ett visst fönster på jorden."
             )]
         [MapToApiVersion("2")]
         [ProducesResponseType(StatusCodes.Status200OK)]
