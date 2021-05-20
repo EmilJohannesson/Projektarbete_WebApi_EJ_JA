@@ -104,15 +104,32 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
 
         // Version 2 starts from here!
 
+        /// <summary>
+        /// Ger en lista med alla GeoMessages som skapats
+        /// </summary>  
+        /// <returns>Lista med GeoMessages</returns>
+        /// 
 
         [AllowAnonymous]
         [HttpGet("GetAllGeoMessages")]
         [MapToApiVersion("2")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<GeoMessage>>> GetAllGeoMessagesV2()
+        public async Task<ActionResult<IEnumerable<Object>>> GetAllGeoMessagesV2(int minLon, int minLat, int maxLon, int maxLat)
         {
-            return await _context.GeoMessages.ToListAsync();
-        }
+            return await _context.GeoMessages.Where(p => p.Latitude >= minLat && p.Latitude <= maxLat && p.Longitude >= minLon && p.Longitude <= maxLon).ToListAsync();
+
+           /* return await _context.GeoMessages.Select(p => new
+            {
+                Message =   p.Message,
+                Title   =   p.Title,
+                Author   =  p.Author,
+                Latitude =  p.Latitude,
+                Longitude = p.Longitude
+                
+
+            }).ToListAsync();
+           */
+        } 
 
         //[Authorize]
         [HttpPost]
@@ -130,8 +147,12 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
             {
                 return BadRequest();
             }
+
+
+
             var geoMessagePost = new GeoMessage
             {
+
                 Message = request.Message,
                 Longitude = request.Longitude,
                 Latitude = request.Latitude,
