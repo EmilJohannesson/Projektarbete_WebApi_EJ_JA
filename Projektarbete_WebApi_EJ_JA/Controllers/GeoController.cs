@@ -112,25 +112,28 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
 
         [AllowAnonymous]
         [HttpGet("GetAllGeoMessages")]
+        [SwaggerOperation(
+            Summary = "Get GeoMessage",
+            Description = ""
+            )]
         [MapToApiVersion("2")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<Object>>> GetAllGeoMessagesV2(int? minLon, int? minLat, int? maxLon, int? maxLat)
         {
             var TheMessage = await _context.GeoMessages.Where(p => p.Latitude >= minLat && p.Latitude <= maxLat && p.Longitude >= minLon && p.Longitude <= maxLon).ToListAsync();
 
-            int?[] myValues = new int?[] { minLon, minLat, maxLon, maxLat };
 
-            foreach (var value in myValues)
+
+            if (minLat == null && minLon == null && maxLat == null && maxLon == null)
             {
-                if (value == null)
-                {
-                    return await _context.GeoMessages.ToListAsync();
-                }
-                   
-                
+                return await _context.GeoMessages.ToListAsync();
+            }
+            else
+            {
+                return TheMessage;
             }
 
-            return TheMessage;
+
 
             /* return await _context.GeoMessages.Select(p => new
              {
@@ -166,7 +169,6 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
 
             var geoMessagePost = new GeoMessage
             {
-
                 Message = request.Message,
                 Longitude = request.Longitude,
                 Latitude = request.Latitude,
