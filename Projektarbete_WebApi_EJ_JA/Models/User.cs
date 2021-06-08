@@ -12,3 +12,4 @@ namespace Projektarbete_WebApi_EJ_JA.Models
         public string LastName { get; set; }
     }
 }
+ 
