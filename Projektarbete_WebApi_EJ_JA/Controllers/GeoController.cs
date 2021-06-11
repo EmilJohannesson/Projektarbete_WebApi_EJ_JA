@@ -197,20 +197,40 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
             var author = user.FirstName + " " + user.LastName;
 
-            var geoMessage = new GeoMessage()
+            var geoMessageTest = new GeoMessage()
             {
                 Latitude = DTO.Latitude,
                 Longitude = DTO.Longitude,
                 Author = author,
                 Body = DTO.Message.Body,
                 Title = DTO.Message.Title,
-
             };
+            var GeoMessageDTOresponse = PostGeoMessageToDTO(geoMessageTest);
+            _context.GeoMessages.Add(geoMessageTest);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetMessagev2), new { id = geoMessageTest.Id, }, GeoMessageDTOresponse);
 
-            _context.GeoMessages.Add(geoMessage);
+            /*
+            _context.GeoMessageDTO.Add(geoMessageTest);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetMessagev2), new { id = geoMessage.Id, }, geoMessage);
+            */
+        }
+
+        static GeoMessageDTO PostGeoMessageToDTO(GeoMessage geoMessageTest)
+        {
+            return new GeoMessageDTO
+            {
+                Message = new Message
+                {
+                    Title = geoMessageTest.Title,
+                    Author = geoMessageTest.Author,
+                    Body = geoMessageTest.Body,
+                },
+                Longitude = geoMessageTest.Longitude,
+                Latitude = geoMessageTest.Latitude
+            };
         }
 
 
@@ -239,16 +259,16 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
             }
 
             GeoMessageDTO GeoMessageDTO = new()
-            {
-                Id = geoMessage.Id,
-                Latitude = geoMessage.Latitude,
-                Longitude = geoMessage.Longitude,
+            {                
                 Message = new Message
                 {
                     Body = geoMessage.Body,
                     Author = geoMessage.Author,
                     Title = geoMessage.Title,
-                }
+                },
+                //Id = geoMessage.Id,
+                Latitude = geoMessage.Latitude,
+                Longitude = geoMessage.Longitude,
             };
 
 

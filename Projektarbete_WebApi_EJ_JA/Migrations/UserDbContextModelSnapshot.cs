@@ -169,15 +169,12 @@ namespace Projektarbete_WebApi_EJ_JA.Migrations
                     b.Property<double>("Longitude")
                         .HasColumnType("float");
 
-                    b.Property<string>("Message")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("GeoMessages");
+                    b.ToTable("GeoMessage");
                 });
 
             modelBuilder.Entity("Projektarbete_WebApi_EJ_JA.Models.User", b =>
@@ -253,17 +250,17 @@ namespace Projektarbete_WebApi_EJ_JA.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ce61d5bf-fb74-4684-a4be-b0e44a9863f4",
+                            Id = "1abc278a-8a0c-4535-938f-d9737a352245",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8f9d0277-6ebe-425e-9ee5-4ec0784fc969",
+                            ConcurrencyStamp = "8b3a2823-6639-46f9-ba3c-491f909484ec",
                             EmailConfirmed = false,
                             FirstName = "Emil",
                             LastName = "Johannesson",
                             LockoutEnabled = false,
                             NormalizedUserName = "EMIL",
-                            PasswordHash = "AQAAAAEAACcQAAAAEM1vxJocIgIk/oZObrK++c6TPlhlAD1KU+LauD6cdpPKAYSA8gFH6VYagByQ0NN0sw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBnNVo33UDJfleZn49RRN01gNZc3PkDZdVLE3kNCSPx5Mmezgg8RAhi/Q8yKtFBw+w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "9d91e9a4-2ff0-47bb-b47c-2b6f2aba7f9b",
+                            SecurityStamp = "c419f908-251e-459d-bd9b-08739d1f9c59",
                             TwoFactorEnabled = false,
                             UserName = "Emil"
                         });

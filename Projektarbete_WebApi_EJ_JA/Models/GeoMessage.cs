@@ -14,12 +14,5 @@ namespace Projektarbete_WebApi_EJ_JA.Models
         public string Author { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-
-
     }
-
-
-
-
-
 }
