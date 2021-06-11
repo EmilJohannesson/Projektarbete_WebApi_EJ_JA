@@ -189,15 +189,19 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
         public async Task<ActionResult<GeoMessageDTO>> CreateNewPostAsyncV2(GeoMessageDTO DTO)
         {
 
-            var Finduser = await _context.Users.FirstAsync();
-            var user = Finduser.UserName;
+            //var Finduser = await _context.Users.FirstAsync();
+            //var user = Finduser.UserName;
 
+            //var user = User.Identity.Name;
+            var userId = User.Identity.GetUserId();
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var author = user.FirstName + " " + user.LastName;
 
             var geoMessage = new GeoMessage()
             {
                 Latitude = DTO.Latitude,
                 Longitude = DTO.Longitude,
-                Author = DTO.Message.Author,
+                Author = author,
                 Body = DTO.Message.Body,
                 Title = DTO.Message.Title,
 
