@@ -112,20 +112,20 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
         {
             GeoMessage geoMessage = await _context.GeoMessages.FindAsync(id);
 
+            if (geoMessage == null)
+            {
+                return NotFound();
+            }
+            else
+            {
             var geoMessagePost = new GeoMessagev1DTO
             {
                 longitude = geoMessage.Longitude,
                 latitude =  geoMessage.Longitude,
                 Message =   geoMessage.Body
             };
-
-            if (geoMessage == null)
-            {
-                return NotFound();
-            }
-
-
             return geoMessagePost;
+            }
         }
 
         // Version 2 starts from here!
