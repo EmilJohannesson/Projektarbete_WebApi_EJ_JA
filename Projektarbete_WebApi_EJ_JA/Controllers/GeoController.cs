@@ -39,9 +39,8 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
         /// <returns>Lista med GeoMessages</returns>
         /// 
 
-
         [AllowAnonymous]
-        [HttpGet("GetAllGeoMessages")]
+        [HttpGet("geo-comments")]
         [MapToApiVersion("1")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<Object>>> GetAllGeoMessages()
@@ -62,10 +61,7 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
             public string Message { get; set; }
             public double longitude { get; set; }
             public double latitude { get; set; }
-
-
         }
-
 
         //[Authorize]
         [HttpPost]
@@ -73,7 +69,7 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
             Summary = "Skapa ett GeoMessage",
             Description = "Skapa ett GeoMessage med Longitud och Latitud, med tillhörande textmedelande"
             )]
-        [Route("CreateNewGeoMessage")]
+        [Route("geo-comments")]
         [MapToApiVersion("1")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -86,10 +82,20 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
                 Latitude = DTO.latitude,
                 Body = DTO.Message,
             };
-
+            var GeoMessageV1DTOresponse = PostGeoMessageToDTOV1(geoMessagePost);
             await _context.AddAsync(geoMessagePost);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetMessagev2), new { id = geoMessagePost.Id }, geoMessagePost);
+            return CreatedAtAction(nameof(GetMessagev2), new { id = geoMessagePost.Id }, GeoMessageV1DTOresponse);
+        }
+        static GeoMessagev1DTO PostGeoMessageToDTOV1(GeoMessage geoMessage)
+        {
+            return new GeoMessagev1DTO
+            {
+                
+                Message = geoMessage.Body,
+                longitude = geoMessage.Longitude,
+                latitude = geoMessage.Latitude
+            };
         }
 
         [AllowAnonymous]
@@ -98,7 +104,7 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
             Summary = "Hämta GeoMessage {Id}",
             Description = "Hämta ett GeoMessage med en specifik {Id}"
             )]
-        [Route("{id}")]
+        [Route("geo-comments/{id}")]
         [MapToApiVersion("1")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -131,7 +137,7 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
         /// 
 
         [AllowAnonymous]
-        [HttpGet("GetAllGeoMessages")]
+        [HttpGet("geo-comments")]
         [SwaggerOperation(
             Summary = "Get GeoMessage",
             Description = ""
@@ -152,10 +158,6 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
             {
                 return TheMessage;
             }
-
-
-
-
         }
         public class Message
         {
@@ -167,7 +169,6 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
 
         public class GeoMessageDTO
         {
-            public int Id { get; set; }
             public double Latitude { get; set; }
             public double Longitude { get; set; }
             public Message Message { get; set; }
@@ -182,22 +183,17 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
             Summary = "Skapa ett GeoMessage",
             Description = "Skapa ett GeoMessage med Longitud och Latitud, med tillhörande textmedelande"
             )]
-        [Route("CreateNewGeoMessage")]
+        [Route("geo-comments")]
         [MapToApiVersion("2")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<GeoMessageDTO>> CreateNewPostAsyncV2(GeoMessageDTO DTO)
         {
-
-            //var Finduser = await _context.Users.FirstAsync();
-            //var user = Finduser.UserName;
-
-            //var user = User.Identity.Name;
             var userId = User.Identity.GetUserId();
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
             var author = user.FirstName + " " + user.LastName;
 
-            var geoMessageTest = new GeoMessage()
+            var geoMessage = new GeoMessage()
             {
                 Latitude = DTO.Latitude,
                 Longitude = DTO.Longitude,
@@ -205,31 +201,24 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
                 Body = DTO.Message.Body,
                 Title = DTO.Message.Title,
             };
-            var GeoMessageDTOresponse = PostGeoMessageToDTO(geoMessageTest);
-            _context.GeoMessages.Add(geoMessageTest);
+            var GeoMessageDTOresponse = PostGeoMessageToDTO(geoMessage);
+            _context.GeoMessages.Add(geoMessage);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetMessagev2), new { id = geoMessageTest.Id, }, GeoMessageDTOresponse);
-
-            /*
-            _context.GeoMessageDTO.Add(geoMessageTest);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetMessagev2), new { id = geoMessage.Id, }, geoMessage);
-            */
+            return CreatedAtAction(nameof(GetMessagev2), new { id = geoMessage.Id, }, GeoMessageDTOresponse);
         }
 
-        static GeoMessageDTO PostGeoMessageToDTO(GeoMessage geoMessageTest)
+        static GeoMessageDTO PostGeoMessageToDTO(GeoMessage geoMessage)
         {
             return new GeoMessageDTO
             {
                 Message = new Message
                 {
-                    Title = geoMessageTest.Title,
-                    Author = geoMessageTest.Author,
-                    Body = geoMessageTest.Body,
+                    Title = geoMessage.Title,
+                    Author = geoMessage.Author,
+                    Body = geoMessage.Body,
                 },
-                Longitude = geoMessageTest.Longitude,
-                Latitude = geoMessageTest.Latitude
+                Longitude = geoMessage.Longitude,
+                Latitude = geoMessage.Latitude
             };
         }
 
@@ -244,14 +233,13 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
          Summary = "Hämta GeoMessage {Id}",
          Description = "Hämta ett GeoMessage med en specifik {Id}"
          )]
-        [Route("{id}")]
+        [Route("geo-comments/{id}")]
         [MapToApiVersion("2")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<object>> GetMessageV2(int id)
         {
             GeoMessage geoMessage = await _context.GeoMessages.FindAsync(id);
-
 
             if (geoMessage == null)
             {
