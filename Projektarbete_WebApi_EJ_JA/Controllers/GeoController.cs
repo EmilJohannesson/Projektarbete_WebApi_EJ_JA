@@ -11,7 +11,6 @@ using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Projektarbete_WebApi_EJ_JA.Controllers
@@ -91,7 +90,6 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
         {
             return new GeoMessagev1DTO
             {
-                
                 Message = geoMessage.Body,
                 longitude = geoMessage.Longitude,
                 latitude = geoMessage.Latitude
@@ -164,8 +162,8 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
             public string Title { get; set; }
             public string Body { get; set; }
             public string Author { get; set; }
-
         }
+
 
         public class GeoMessageDTO
         {
@@ -175,7 +173,18 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
         }
 
 
-
+        //För att dölja Author i post body i swagger
+        public class GeoMessageDTOPost
+        {
+            public double Latitude { get; set; }
+            public double Longitude { get; set; }
+            public MessageDTOPost Message { get; set; }
+        }
+        public class MessageDTOPost
+        {
+            public string Title { get; set; }
+            public string Body { get; set; }
+        }
 
         //[Authorize]
         [HttpPost]
@@ -187,7 +196,7 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
         [MapToApiVersion("2")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<GeoMessageDTO>> CreateNewPostAsyncV2(GeoMessageDTO DTO)
+        public async Task<ActionResult<GeoMessageDTOPost>> CreateNewPostAsyncV2(GeoMessageDTOPost DTO)
         {
             var userId = User.Identity.GetUserId();
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
@@ -221,11 +230,6 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
                 Latitude = geoMessage.Latitude
             };
         }
-
-
-
-
-
 
         [AllowAnonymous]
         [HttpGet]
