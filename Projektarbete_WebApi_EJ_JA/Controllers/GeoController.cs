@@ -167,18 +167,18 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
 
         public class GeoMessageDTO
         {
+            public Message Message { get; set; }
             public double Latitude { get; set; }
             public double Longitude { get; set; }
-            public Message Message { get; set; }
         }
 
 
         //För att dölja Author i post body i swagger
         public class GeoMessageDTOPost
         {
+            public MessageDTOPost Message { get; set; }
             public double Latitude { get; set; }
             public double Longitude { get; set; }
-            public MessageDTOPost Message { get; set; }
         }
         public class MessageDTOPost
         {
@@ -204,11 +204,11 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
 
             var geoMessage = new GeoMessage()
             {
-                Latitude = DTO.Latitude,
-                Longitude = DTO.Longitude,
                 Author = author,
                 Body = DTO.Message.Body,
                 Title = DTO.Message.Title,
+                Longitude = DTO.Longitude,
+                Latitude = DTO.Latitude,
             };
             var GeoMessageDTOresponse = PostGeoMessageToDTO(geoMessage);
             _context.GeoMessages.Add(geoMessage);
