@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Projektarbete_WebApi_EJ_JA.Migrations
 {
-    public partial class FinalMigration : Migration
+    public partial class test : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -54,9 +54,11 @@ namespace Projektarbete_WebApi_EJ_JA.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Longitude = table.Column<double>(type: "float", nullable: false),
-                    Latitude = table.Column<double>(type: "float", nullable: false)
+                    Body = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Author = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Latitude = table.Column<double>(type: "float", nullable: false),
+                    Longitude = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -172,7 +174,7 @@ namespace Projektarbete_WebApi_EJ_JA.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "16c9587f-71b3-4312-9cb7-457bde8bc52d", 0, "2b62309b-d179-43f2-a9ac-e918fc954445", null, false, "Emil", "Johannesson", false, null, null, "EMIL", "AQAAAAEAACcQAAAAEI4g14aVvl8rYdgTQwEG+EJVHcv9FeZXfRFLtLNPP3XV44O2M6y3AEYlFf6gxewL9w==", null, false, "22806377-2f00-4804-b828-aab8ce097267", false, "Emil" });
+                values: new object[] { "9adfca8a-1136-4cad-9c4d-e34f72540cfc", 0, "2fc19346-3666-49c5-9ef9-ef2327a53c7c", null, false, "Emil", "Johannesson", false, null, null, "EMIL", "AQAAAAEAACcQAAAAECAWbeRyieocXfH/DXvaWEXvKWxMW6i2aHAppShC2lJ86OMHzshdVp4z/tu2tsJwGQ==", null, false, "88e7f533-e109-4057-bf8a-32329d364a36", false, "Emil" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

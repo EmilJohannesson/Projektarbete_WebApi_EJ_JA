@@ -10,15 +10,15 @@ using Projektarbete_WebApi_EJ_JA.Data;
 namespace Projektarbete_WebApi_EJ_JA.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20210515182949_v2")]
-    partial class v2
+    [Migration("20210616132358_test")]
+    partial class test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.6")
+                .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -171,9 +171,6 @@ namespace Projektarbete_WebApi_EJ_JA.Migrations
                     b.Property<double>("Longitude")
                         .HasColumnType("float");
 
-                    b.Property<string>("Message")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
@@ -255,17 +252,17 @@ namespace Projektarbete_WebApi_EJ_JA.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ce61d5bf-fb74-4684-a4be-b0e44a9863f4",
+                            Id = "9adfca8a-1136-4cad-9c4d-e34f72540cfc",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8f9d0277-6ebe-425e-9ee5-4ec0784fc969",
+                            ConcurrencyStamp = "2fc19346-3666-49c5-9ef9-ef2327a53c7c",
                             EmailConfirmed = false,
                             FirstName = "Emil",
                             LastName = "Johannesson",
                             LockoutEnabled = false,
                             NormalizedUserName = "EMIL",
-                            PasswordHash = "AQAAAAEAACcQAAAAEM1vxJocIgIk/oZObrK++c6TPlhlAD1KU+LauD6cdpPKAYSA8gFH6VYagByQ0NN0sw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECAWbeRyieocXfH/DXvaWEXvKWxMW6i2aHAppShC2lJ86OMHzshdVp4z/tu2tsJwGQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "9d91e9a4-2ff0-47bb-b47c-2b6f2aba7f9b",
+                            SecurityStamp = "88e7f533-e109-4057-bf8a-32329d364a36",
                             TwoFactorEnabled = false,
                             UserName = "Emil"
                         });

@@ -119,7 +119,7 @@ namespace Projektarbete_WebApi_EJ_JA.Controllers
             var geoMessagePost = new GeoMessagev1DTO
             {
                 longitude = geoMessage.Longitude,
-                latitude =  geoMessage.Longitude,
+                latitude =  geoMessage.Latitude,
                 Message =   geoMessage.Body
             };
             return geoMessagePost;

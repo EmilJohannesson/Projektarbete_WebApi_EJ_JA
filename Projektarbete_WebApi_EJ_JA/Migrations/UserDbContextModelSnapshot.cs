@@ -16,7 +16,7 @@ namespace Projektarbete_WebApi_EJ_JA.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.6")
+                .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -174,7 +174,7 @@ namespace Projektarbete_WebApi_EJ_JA.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GeoMessage");
+                    b.ToTable("GeoMessages");
                 });
 
             modelBuilder.Entity("Projektarbete_WebApi_EJ_JA.Models.User", b =>
@@ -250,17 +250,17 @@ namespace Projektarbete_WebApi_EJ_JA.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1abc278a-8a0c-4535-938f-d9737a352245",
+                            Id = "9adfca8a-1136-4cad-9c4d-e34f72540cfc",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8b3a2823-6639-46f9-ba3c-491f909484ec",
+                            ConcurrencyStamp = "2fc19346-3666-49c5-9ef9-ef2327a53c7c",
                             EmailConfirmed = false,
                             FirstName = "Emil",
                             LastName = "Johannesson",
                             LockoutEnabled = false,
                             NormalizedUserName = "EMIL",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBnNVo33UDJfleZn49RRN01gNZc3PkDZdVLE3kNCSPx5Mmezgg8RAhi/Q8yKtFBw+w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECAWbeRyieocXfH/DXvaWEXvKWxMW6i2aHAppShC2lJ86OMHzshdVp4z/tu2tsJwGQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c419f908-251e-459d-bd9b-08739d1f9c59",
+                            SecurityStamp = "88e7f533-e109-4057-bf8a-32329d364a36",
                             TwoFactorEnabled = false,
                             UserName = "Emil"
                         });
